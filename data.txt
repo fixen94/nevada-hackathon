@@ -1,2 +1,9 @@
-gfhfghfgh
-fghgfh
+User-agent: *
+Disallow: /*?*
+Disallow: /admin
+Disallow: /static
+
+User-agent: Yandex
+Disallow: /*?*
+Disallow: /admin
+Disallow: /static
