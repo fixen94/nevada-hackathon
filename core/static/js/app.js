@@ -110,6 +110,21 @@ window.utils = {
             })
         });
     },
+    setInterval:(function () {
+        $.ajax({
+            url: "/update",
+            type: 'POST',
+            data: {'check': true},
+
+            success: function (json) {
+                if (json.result) {
+                    $('#notify_icon').addClass("notification");
+                    var doc = $.parseHTML(json._data);
+                    $('#notifications-list').html(doc);
+                }
+            }
+        });
+    }, 10000),
 
     validateForm: function ($form) {
         $form.find('.form__field-alert').remove();

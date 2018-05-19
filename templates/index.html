@@ -3,12 +3,6 @@
 <html lang="ru" prefix="og: http://ogp.me/ns#">
     <head>
         <title>Hackathon</title>
-        <div id="info">
-            {% for item in data %}
-            {{ item }}<br>
-            {% endfor %}
-            Человек на кассе: {{ person_counter }}
-        </div>
         {% block additional_styles %}
         {% endblock %}
 
@@ -17,7 +11,17 @@
         {% endblock %}
     </head>
     <body>
-
+        <div id="info">
+            {% for item in data %}
+            {{ item }}<br>
+            {% endfor %}
+            Человек на кассе: {{ person_counter }}
+        </div>
+        {% for notice in user.notice_set.all|dictsortreversed:"date"|dictsort:"is_readed"|slice:":5" %}
+        <div>
+            {{ notice.content }}
+        </div>
+        {% endfor %}
         {% block main_scripts %}
             <script src="{% static 'js/vendor/jquery-3.2.1.min.js' %}"></script>
             <script src="{% static 'js/app.js' %}"></script>
