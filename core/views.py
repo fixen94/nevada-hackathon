@@ -32,7 +32,14 @@ def update(request):
         for line in data:
             if 'person' in line:
                 person_counter += 1
-        json_dict = dict(data=dict(kassa=1,persons=person_counter))
+        dicts = []
+        # for kassa in kassas:
+        #     data_dict = dict(kassa=nomer, persons=person_counter, date='date', status='busy')
+        #     dicts.append(data_dict)
+        data_dict = dict(kassa=1, persons=person_counter, date='date', status='busy')
+        data_dict2 = dict(kassa=1, persons=person_counter, date='date', status='busy')
+        dicts = [data_dict, data_dict2]
+        json_dict = dict(data=dicts)
         json_data = json.dumps(json_dict, indent=4)
         return HttpResponse(json_data
             # {
