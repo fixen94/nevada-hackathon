@@ -3,10 +3,12 @@
 <html lang="ru" prefix="og: http://ogp.me/ns#">
     <head>
         <title>Hackathon</title>
+        <div id="info">
             {% for item in data %}
             {{ item }}<br>
             {% endfor %}
-
+            Человек на кассе: {{ person_counter }}
+        </div>
         {% block additional_styles %}
         {% endblock %}
 

@@ -6,8 +6,7 @@ from django.conf import settings
 from . import views
 
 
-
 urlpatterns = [
     path('', views.show_data, name='data'),
-
+    path('update', views.update, name='update'),
 ]
