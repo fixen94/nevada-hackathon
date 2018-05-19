@@ -1,7 +1,8 @@
 from django.http import StreamingHttpResponse, HttpResponse, JsonResponse
 from django.shortcuts import render
 from urllib.request import urlretrieve
-import  json
+import json
+from django.core import serializers
 
 
 def show_data(request):
@@ -22,11 +23,19 @@ def show_data(request):
 
 
 def update(request):
-    data = []
     if request.method == "POST":
-        with open("data.txt", 'r', encoding='utf-8') as file:
+        data = []
+        with open("C:/Users/fixen/Dropbox/Samberi/output.txt", 'r', encoding='utf-8') as file:
             for line in file:
                 data.append(line)
-        json_data = json.dumps(data, sort_keys=True, indent=4)
-        return JsonResponse(json_data)
+        person_counter = 0
+        for line in data:
+            if 'person' in line:
+                person_counter += 1
+        # json_data = json.dumps({'persons': person_counter}, indent=4)
+        return JsonResponse({'persons': person_counter
+                             })
+
+    else:
+        return JsonResponse({'status': 'failed'})
 

@@ -1,66 +1,48 @@
 $(function () {
-    //Переключение меню
-    $('#menu-toggle').click(function () {
-        $('#menu').toggleClass('menu-section--show');
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+        }
+    return cookieValue;
+    }
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
     });
 
+    setInterval(function (crsftoken) {
+        $.ajax({
+            url: "/update",
+            type: 'POST',
+            data: {'check': true
+            },
 
-
-    //Отправка формы
-    $('.js-callback-form').submit(function (e) {
-        e.preventDefault();
-        var $form = $(this);
-
-        if (window.utils.validateForm($form)) {
-            $.ajax({
-                type: $form.attr('method'),
-                url: $form.attr('action'),
-                data: $form.serialize(),
-                dataType: 'json',
-                success: function (data) {
-                    window.utils.notification('Сообщение успешно отправлено', 4000);
-                    $('#callback-form-popup').fadeOut();
-                    $form.find('input , textarea').not('input:hidden, input:submit').val('');
+            success: function (json) {
+                if (json.result) {
+                    $('#notify_icon').addClass("notification");
+                    var doc = $.parseHTML(json._data);
+                    $('#_data').html(doc);
                 }
-            });
-            return false;
-        }
-        else {
-            window.utils.notification('Проверьте правильность введенных данных', 3000);
-        }
-    });    
-
-
-    
-    //Попап с формой
-    $('#call-lawyer').click(function () {
-        $('#callback-form-popup').addClass('page-overlay--show');
-    });
-
-    $(document).mouseup(function (e) {
-        if (
-            !$(".page-overlay__form").is(e.target) &&
-            $(".page-overlay__form").has(e.target).length === 0 ||
-            $("#popup-form-close").is(e.target)
-        ) {
-            $('.page-overlay').removeClass('page-overlay--show');
-        }
-    });
-
-
-
-    //Пользовательское соглашение
-    var $agreement = $('.agreement'),
-        $agreementCheck = $agreement.find('.agreement__checkbox'),
-        $formSubmit = $agreement.closest('form').find('.btn');
-
-    $agreementCheck.click(function () {
-        $(this).prop('checked') === true ?
-            $formSubmit.prop('disabled', false) :
-            $formSubmit.prop('disabled', true);
-    })
+            }
+        });
+    }, 10000)
 })
-
 
 
 function isMobile() {
@@ -110,21 +92,7 @@ window.utils = {
             })
         });
     },
-    setInterval:(function () {
-        $.ajax({
-            url: "/update",
-            type: 'POST',
-            data: {'check': true},
 
-            success: function (json) {
-                if (json.result) {
-                    $('#notify_icon').addClass("notification");
-                    var doc = $.parseHTML(json._data);
-                    $('#_data').html(doc);
-                }
-            }
-        });
-    }, 10000),
 
     validateForm: function ($form) {
         $form.find('.form__field-alert').remove();

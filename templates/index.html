@@ -17,17 +17,19 @@
             {% endfor %}
             Человек на кассе: {{ person_counter }}
         </div>
-        {% for notice in user.notice_set.all|dictsortreversed:"date"|dictsort:"is_readed"|slice:":5" %}
-        <div>
-            {{ notice.content }}
-        </div>
-        {% endfor %}
+        {% csrf_token %}
+
         {% block main_scripts %}
             <script src="{% static 'js/vendor/jquery-3.2.1.min.js' %}"></script>
             <script src="{% static 'js/app.js' %}"></script>
         {% endblock %}
 
         {% block additional_scripts %}
+            <script type="text/javascript">
+                // using jQuery
+                var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+            </script>
         {% endblock %}
     </body>
 </html>
