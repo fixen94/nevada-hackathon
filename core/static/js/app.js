@@ -120,7 +120,7 @@ window.utils = {
                 if (json.result) {
                     $('#notify_icon').addClass("notification");
                     var doc = $.parseHTML(json._data);
-                    $('#notifications-list').html(doc);
+                    $('#_data').html(doc);
                 }
             }
         });
