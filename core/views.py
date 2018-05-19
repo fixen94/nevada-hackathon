@@ -32,9 +32,32 @@ def update(request):
         for line in data:
             if 'person' in line:
                 person_counter += 1
-        # json_data = json.dumps({'persons': person_counter}, indent=4)
-        return JsonResponse({'persons': person_counter
-                             })
+        json_dict = dict(data=dict(kassa=1,persons=person_counter))
+        json_data = json.dumps(json_dict, indent=4)
+        return HttpResponse(json_data
+            # {
+                    # 'data': [
+                    #         {
+                    #             'kassa': 1,
+                    #             'persons': person_counter,
+                    #             'date': date
+                    #             'status': 'busy'
+                    #         },
+                    #         {
+                    #             'kassa': 2,
+                    #             'persons': person_counter,
+                    #             'date': 'free'
+                    #         },
+                    #         {
+                    #             'kassa': 3,
+                    #             'persons': person_counter,
+                    #             'date': 'free'
+                    #         }
+                    #
+                    #         ],
+
+                             # }
+        )
 
     else:
         return JsonResponse({'status': 'failed'})

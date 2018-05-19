@@ -35,7 +35,7 @@ $(function () {
 
             success: function (json) {
                 if (json.result) {
-                    $('#notify_icon').addClass("notification");
+                    $('#info').text("notification");
                     json._data = JSON.parse(json._data);
                     var doc = $.parseHTML(json._data);
                     $('#_data').html(doc);
