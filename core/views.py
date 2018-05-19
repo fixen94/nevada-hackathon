@@ -1,6 +1,7 @@
 from django.http import StreamingHttpResponse, HttpResponse, JsonResponse
 from django.shortcuts import render
 from urllib.request import urlretrieve
+import  json
 
 
 def show_data(request):
@@ -26,5 +27,6 @@ def update(request):
         with open("data.txt", 'r', encoding='utf-8') as file:
             for line in file:
                 data.append(line)
-        return JsonResponse({'success': 'true'})
+        json_data = json.dumps(data, sort_keys=True, indent=4)
+        return JsonResponse(json_data)
 
