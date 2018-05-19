@@ -35,10 +35,24 @@ $(function () {
 
             success: function (json) {
                 if (json.result) {
-                    $('#notify_icon').addClass("notification");
-                    json._data = JSON.parse(json._data);
-                    var doc = $.parseHTML(json._data);
-                    $('#_data').html(doc);
+                    //$('#notify_icon').addClass("notification");
+                    var data = JSON.parse(json._data);
+                    var template ="";
+                    for(var i=0; i<data.length; i++){
+                        template += '' +
+                            '<div>' +
+                            ''+data[i].kassa+'<br>'+
+                            ''+data[i].persons+'<br>'+
+                            ''+data[i].date+'<br>'+
+                            ''+data[i].status+'<br>'+
+                            '</div>';
+                    }
+                    $( "#info" ).text(template);
+                    /*$( "#info" ).text(function( index ) {
+                        return "date:" + ( data.date[index] );
+                    });*/
+                    //var doc = $.parseHTML(json._data);
+                    //$('#info').html(template);
                 }
             }
         });
