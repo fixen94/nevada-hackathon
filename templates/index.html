@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ru" prefix="og: http://ogp.me/ns#">
+    <head>
+        <title>Это наш проект, не бейте =)</title>
+        {% for item in data %}
+        {{ item }}
+        {% endfor %}
+
+        {% block additional_styles %}
+        {% endblock %}
+
+        {% block main_styles %}
+            <link rel="stylesheet" href="{% static 'css/style.min.css' %}?ver=3">
+        {% endblock %}
+    </head>
+    <body>
+
+        {% block main_scripts %}
+            <script src="{% static 'js/vendor/jquery-3.2.1.min.js' %}"></script>
+            <script src="{% static 'js/app.js' %}"></script>
+        {% endblock %}
+
+        {% block additional_scripts %}
+        {% endblock %}
+    </body>
+</html>
