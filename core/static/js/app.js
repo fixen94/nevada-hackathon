@@ -10,17 +10,22 @@ function getData() {
                     //$('#notify_icon').addClass("notification");
                     var data = JSON.parse(json);
                     if(data.data) {
-                        var template = "";
+                        var template = 'Время последнего снимка:' + data.date + '<br>';
+
                         for (var i = 0; i < data.data.length; i++) {
-                            template += '' +
-                                '<div class="">' +
-                                'Касса:' + data.data[i].kassa + '<br>' +
-                                'В очереди:' + data.data[i].persons + '<br>' +
-                                'Текущая дата:' + data.data[i].date + '<br>' +
-                                'Статус:' + data.data[i].status + '<br>' +
+                            if(data.data[i].status == 'загружена'){
+                                var status = '<span class="busy">Статус: ' + data.data[i].status + '</span><br>'
+                                }
+                                else {
+                                var status = 'Статус: ' + data.data[i].status + '<br>'
+                                      }
+                                template += '' +
+                                '<div class="kassa">' +
+                                'Касса: ' + data.data[i].kassa + '<br>'+
+                                'В очереди: ' + data.data[i].persons + '<br>' + status
                                 '</div>';
                         }
-                        $('div').html(template);
+                        $('#info').html(template);
                     }
                 }
             }

@@ -1,0 +1,9 @@
+.kassa{
+    padding-top: 15px;
+}
+.busy{
+    color: red;
+}
+body{
+    margin-top: 30px !important;
+}

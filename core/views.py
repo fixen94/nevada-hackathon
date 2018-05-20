@@ -6,9 +6,7 @@ import re
 from .models import Kassa, Time
 
 
-
 def show_data(request):
-
     return render(request, 'index.html', {
 
     })
@@ -17,8 +15,10 @@ def show_data(request):
 def update(request):
     if request.method == "POST":
         data = []
-        with open("C:/Users/fixen/Dropbox/Samberi/new.txt", 'r', encoding='utf-8') as file:
+        with open("C:/Users/fixen/Dropbox/Samberi/output.txt", 'r', encoding='utf-8') as file:
             for line in file:
+                if('Predicted' in line):
+                    continue
                 data.append(line)
 
         # Time.objects.all().delete()
@@ -32,10 +32,10 @@ def update(request):
             final_kassa = Kassa.objects.filter(kassa_date=date_entry)
             dicts = []
             for kassa in final_kassa:
-                data_dict = dict(kassa=kassa.kassa_no, persons=kassa.persons, date=kassa.kassa_date.date,
+                data_dict = dict(kassa=kassa.kassa_no, persons=kassa.persons,
                                  status=kassa.status)
                 dicts.append(data_dict)
-            json_dict = dict(data=dicts)
+            json_dict = dict(data=dicts, date=date_entry.date)
             json_data = json.dumps(json_dict, indent=4)
             return HttpResponse(json_data)
 
@@ -44,9 +44,10 @@ def update(request):
         for idx, line in enumerate(data):
             if 'kassa' in line:
                 info_start = idx
-            if '>' in line:
+            if '*' in line:
                 info_end = idx
                 info = data[info_start:info_end + 1]
+                print(info)
                 kassas.append(info)
 
         dicts_lst = list()
@@ -63,20 +64,21 @@ def update(request):
                     person_counter += 1
             persons = person_counter
             if persons > 5:
-                status = 'busy'
-                kassa_entry = Kassa.objects.create_kassa(kassa_no, persons, status, date_entry)
+                status = 'загружена'
+            else:
+                status = 'не загружена'
+            kassa_entry = Kassa.objects.create_kassa(kassa_no, persons, status, date_entry)
 
         final_kassa = Kassa.objects.filter(kassa_date=date_entry)
 
         dicts = []
         for kassa in final_kassa:
-            data_dict = dict(kassa=kassa.kassa_no, persons=kassa.persons, date=kassa.kassa_date.date,
+            data_dict = dict(kassa=kassa.kassa_no, persons=kassa.persons,
                              status=kassa.status)
             dicts.append(data_dict)
-        json_dict = dict(data=dicts)
+        json_dict = dict(data=dicts, date=date_entry.date)
         json_data = json.dumps(json_dict, indent=4)
         return HttpResponse(json_data)
 
     else:
-        return JsonResponse({'status': 'failed'})
-
+        return HttpResponse("Error 404")

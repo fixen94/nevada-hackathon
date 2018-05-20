@@ -12,17 +12,31 @@
         {% endblock %}
     </head>
     <body>
-    yo
-        <div id="info">
-                Касса №:{{ kassa.kassa_no }}
-                Человек: {{ kassa.persons }}
-                Статус: {{ kassa.status }}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+            Текущая дата:
+                <iframe src="http://free.timeanddate.com/clock/i68x9iqv/n2439/tlru33/fs15/pl8/pr8/pt0/pb0/tt0/tw0/tm3/th1" frameborder="0" width="154" height="18">
+
+                </iframe>
+
+            Смотрите
+
+                <div id="info">
+                        Время:<br>
+                        Касса №:<br>
+                        Человек:<br>
+                        Статус:<br>
+                </div>
+                {% csrf_token %}
+                    </div>
+            </div>
         </div>
-        {% csrf_token %}
 
         {% block main_scripts %}
             <script src="{% static 'js/vendor/jquery-3.2.1.min.js' %}"></script>
             <script src="{% static 'js/app.js' %}"></script>
+            <script src="{% static 'js/vendor/moment.js' %}"></script>
         {% endblock %}
 
         {% block additional_scripts %}
