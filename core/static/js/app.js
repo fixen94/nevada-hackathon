@@ -40,14 +40,14 @@ $(function () {
                     var template ="";
                     for(var i=0; i<data.length; i++){
                         template += '' +
-                            '<div>' +
-                            ''+data[i].kassa+'<br>'+
-                            ''+data[i].persons+'<br>'+
-                            ''+data[i].date+'<br>'+
-                            ''+data[i].status+'<br>'+
+                            '<div class="">' +
+                            'Касса:'+data[i].kassa+'<br>'+
+                            'В очереди:'+data[i].persons+'<br>'+
+                            'Текущая дата:'+data[i].date+'<br>'+
+                            'Статус:'+data[i].status+'<br>'+
                             '</div>';
                     }
-                    $( "#info" ).text(template);
+                    $( "div" ).text(template);
                     /*$( "#info" ).text(function( index ) {
                         return "date:" + ( data.date[index] );
                     });*/
