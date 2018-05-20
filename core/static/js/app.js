@@ -9,21 +9,19 @@ function getData() {
                 if (json) {
                     //$('#notify_icon').addClass("notification");
                     var data = JSON.parse(json);
-                    var template ="";
-                    for(var i=0; i<data.data.length; i++){
-                        template = '' +
-                            '<div class="">' +
-                            'Касса:'+data.data[i].kassa+'<br>'+
-                            'В очереди:'+data.data[i].persons+'<br>'+
-                            'Текущая дата:'+data.data[i].date+'<br>'+
-                            'Статус:'+data.data[i].status+'<br>'+
-                            '</div>';
+                    if(data.data) {
+                        var template = "";
+                        for (var i = 0; i < data.data.length; i++) {
+                            template += '' +
+                                '<div class="">' +
+                                'Касса:' + data.data[i].kassa + '<br>' +
+                                'В очереди:' + data.data[i].persons + '<br>' +
+                                'Текущая дата:' + data.data[i].date + '<br>' +
+                                'Статус:' + data.data[i].status + '<br>' +
+                                '</div>';
+                        }
+                        $('div').html(template);
                     }
-                    /*$( "#info" ).text(function( index ) {
-                        return "date:" + ( data.date[index] );
-                    });*/
-                    //var doc = $.parseHTML(json._data);
-                    $('div').html(template);
                 }
             }
         });

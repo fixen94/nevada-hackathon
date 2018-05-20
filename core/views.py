@@ -20,12 +20,25 @@ def update(request):
         with open("C:/Users/fixen/Dropbox/Samberi/new.txt", 'r', encoding='utf-8') as file:
             for line in file:
                 data.append(line)
-        with open("C:/Users/fixen/Dropbox/Samberi/output2.txt", 'w', encoding='utf-8') as file:
-            file.writelines(data)
 
-        Time.objects.all().delete()
+        # Time.objects.all().delete()
         date = data[0].strip()
-        date_entry = Time.objects.create_time(date)
+        date = date.strip('Date: ')
+        date_entry = Time.objects.filter(date=date)
+        if len(date_entry) == 0:
+            date_entry = Time.objects.create_time(date)
+        else:
+            date_entry = Time.objects.filter(date=date)[0]
+            final_kassa = Kassa.objects.filter(kassa_date=date_entry)
+            dicts = []
+            for kassa in final_kassa:
+                data_dict = dict(kassa=kassa.kassa_no, persons=kassa.persons, date=kassa.kassa_date.date,
+                                 status=kassa.status)
+                dicts.append(data_dict)
+            json_dict = dict(data=dicts)
+            json_data = json.dumps(json_dict, indent=4)
+            return HttpResponse(json_data)
+
 
         kassas = []
         for idx, line in enumerate(data):
