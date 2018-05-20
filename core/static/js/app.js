@@ -52,7 +52,7 @@ $(function () {
                         return "date:" + ( data.date[index] );
                     });*/
                     //var doc = $.parseHTML(json._data);
-                    //$('#info').html(template);
+                    $('#info').html(template);
                 }
             }
         });
