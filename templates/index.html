@@ -12,13 +12,11 @@
         {% endblock %}
     </head>
     <body>
+    yo
         <div id="info">
-            {{ final_kassa.date }}
-            {% for kassa in final_kassa %}
-                Касса №:{{ kassa.kassa_no.kassa_no }}
-                Человек: {{ kassa.kassa_no.persons }}
-                Статус: {{ kassa.kassa_no.status }}
-            {% endfor %}
+                Касса №:{{ kassa.kassa_no }}
+                Человек: {{ kassa.persons }}
+                Статус: {{ kassa.status }}
         </div>
         {% csrf_token %}
 

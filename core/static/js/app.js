@@ -1,19 +1,38 @@
-$(function () {
-    function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
+function getData() {
+        $.ajax({
+            url: "/update",
+            type: 'POST',
+            data: {'check': true
+            },
+
+            success: function (json) {
+                if (json) {
+                    //$('#notify_icon').addClass("notification");
+                    var data = JSON.parse(json);
+                    var template ="";
+                    for(var i=0; i<data.data.length; i++){
+                        template = '' +
+                            '<div class="">' +
+                            'Касса:'+data.data[i].kassa+'<br>'+
+                            'В очереди:'+data.data[i].persons+'<br>'+
+                            'Текущая дата:'+data.data[i].date+'<br>'+
+                            'Статус:'+data.data[i].status+'<br>'+
+                            '</div>';
+                    }
+                    /*$( "#info" ).text(function( index ) {
+                        return "date:" + ( data.date[index] );
+                    });*/
+                    //var doc = $.parseHTML(json._data);
+                    $('div').html(template);
+                }
             }
-        }
-        }
-    return cookieValue;
+        });
     }
+
+
+
+$(function () {
+
     function csrfSafeMethod(method) {
         // these HTTP methods do not require CSRF protection
         return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
@@ -25,38 +44,9 @@ $(function () {
             }
         }
     });
+    getData();
+    setInterval(getData, 5000);
 
-    setInterval(function (crsftoken) {
-        $.ajax({
-            url: "/update",
-            type: 'POST',
-            data: {'check': true
-            },
-
-            success: function (json) {
-                if (json.result) {
-                    //$('#notify_icon').addClass("notification");
-                    var data = JSON.parse(json._data);
-                    var template ="";
-                    for(var i=0; i<data.length; i++){
-                        template += '' +
-                            '<div class="">' +
-                            'Касса:'+data[i].kassa+'<br>'+
-                            'В очереди:'+data[i].persons+'<br>'+
-                            'Текущая дата:'+data[i].date+'<br>'+
-                            'Статус:'+data[i].status+'<br>'+
-                            '</div>';
-                    }
-                    $( "div" ).text(template);
-                    /*$( "#info" ).text(function( index ) {
-                        return "date:" + ( data.date[index] );
-                    });*/
-                    //var doc = $.parseHTML(json._data);
-                    $('#info').html(template);
-                }
-            }
-        });
-    }, 10000)
 })
 
 
